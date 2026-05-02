@@ -17,7 +17,7 @@ const User = sequelize.define('users', {
         unique: true,
         validate: {isEmail: true}
     },
-    password:{
+    hashedPassword:{
         type: DataTypes.STRING,
         allowNull: false
     }
