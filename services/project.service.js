@@ -39,7 +39,23 @@ async function createProjectService(projectData){
 }
 
 
+
+async function updateProjectService(projectId, userId, updateData){
+    try {
+        // solo el owner puede editar el proyecto
+        const project = await Project.findOne({ where: { projectId, ownerId: userId } });
+
+        if (!project) return null;
+
+        await project.update(updateData);
+        return project;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export {
     getUserProjects,
-    createProjectService
+    createProjectService,
+    updateProjectService
 }
