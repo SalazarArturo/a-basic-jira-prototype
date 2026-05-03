@@ -1,5 +1,8 @@
 import 'dotenv/config'; 
 import express from 'express';
+import cors from 'cors';
+
+
 
 import { sequelize, connectDb } from './config/db.config.js';
 import './models/index.js'; //modelos con las relaciones establecidas
@@ -8,6 +11,12 @@ import projectRouter from './routes/project.route.js';
 import ticketRouter from './routes/ticket.route.js';
 
 const app = express();
+
+app.use(cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 app.use(express.json());
 

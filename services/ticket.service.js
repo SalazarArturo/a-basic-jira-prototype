@@ -1,7 +1,7 @@
 import { Ticket } from '../models/index.js';
-import { AssignedProject } from '../models/index.js';
+import { AssignedProject, User, Project } from '../models/index.js';
 
-// mapa de transiciones de estado permitidas
+// transiciones de estado permitidas
 const allowedTransitions = {
     pendiente: ['progreso'],
     progreso: ['pendiente', 'completado'],
@@ -12,21 +12,33 @@ async function getTicketsByProjectService(projectId) {
     try {
         const tickets = await Ticket.findAll({ where: { projectId } });
         return tickets;
+
     } catch (error) {
         throw error;
     }
 }
 
-async function getTicketByIdService(ticketId, projectId) {
+async function getTicketByIdService(ticketId, projectId) { // 1ER ISSUE: aqui se puede dar mas detalles haciendo un join con users y projects
     try {
         const ticket = await Ticket.findOne({ where: { ticketId, projectId } });
-        return ticket;
+        if(!ticket) return null;
+
+        const getAssignedUser = await User.findOne({where: {userId: ticket.assignedUserId}});
+
+        const currentProject = await Project.findOne({where:{projectId: ticket.projectId}});
+
+        return {
+            ticket,
+            assignedUser: getAssignedUser,
+            project: currentProject
+        }
+
     } catch (error) {
         throw error;
     }
 }
 
-async function createTicketService(ticketData) {
+async function createTicketService(ticketData) { 
     // ticketData: { projectId, title, description, assignedUserId }
     try {
         // validamos que el usuario asignado sea miembro del proyecto
@@ -55,7 +67,7 @@ async function createTicketService(ticketData) {
 }
 
 async function updateTicketService(ticketId, projectId, updateData) {
-    // updateData puede tener: title, description, assignedUserId
+   
     try {
         const ticket = await Ticket.findOne({ where: { ticketId, projectId } });
 

@@ -1,5 +1,5 @@
 import { getUserProjects, createProjectService, getProjectByIdService, updateProjectService } from "../services/project.service.js";
-import { addColabProjectMember, getProjectMember } from "../services/assignedProject.service.js";
+import { addColabProjectMember, getProjectMember, removeColabProjectMemberService } from "../services/assignedProject.service.js";
 import { getProjectMembersService } from "../services/user.service.js";
 
 async function getProjects(req, res){
@@ -96,10 +96,29 @@ async function updateProject(req, res){ //aqui se usara el servicio para actuali
     }
 }
 
+async function removeProjectMember(req, res){
+    const {userId} = req.user;
+    const {projectId} = req.params;
+
+    try {
+        const result = await removeColabProjectMemberService(parseInt(projectId), userId);
+
+        if(!result){
+            return res.status(400).json({message: 'No tiene permisos para remover al miembro'});
+        }
+        return res.status(200).json({message: 'Miembro removido con exito'});
+
+    } catch (error) {
+        console.error(error.message);
+        return res.status(500).json({error: 'error interno, intente nuevamente'});
+    }
+}
+
 export{
     getProjects,
     createProject,
     getProjectById,
     addProjectMember,
-    updateProject
+    updateProject,
+    removeProjectMember
 }

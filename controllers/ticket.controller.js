@@ -23,13 +23,15 @@ async function getTicketById(req, res) {
     const { projectId, ticketId } = req.params;
 
     try {
-        const ticket = await getTicketByIdService(parseInt(ticketId), parseInt(projectId));
+        const ticketDetails = await getTicketByIdService(parseInt(ticketId), parseInt(projectId));
 
-        if (!ticket) {
+        if (!ticketDetails) {
             return res.status(404).json({ error: 'Ticket no encontrado' });
         }
 
-        return res.status(200).json({ ticket });
+
+        return res.status(200).json(ticketDetails);
+
     } catch (error) {
         console.error(error.message);
         return res.status(500).json({ error: 'error interno, intente nuevamente' });
@@ -48,7 +50,7 @@ async function createTicket(req, res) {
             assignedUserId
         });
 
-        return res.status(201).json({ message: 'Ticket creado correctamente !', ticket: newTicket });
+        return res.status(201).json({ message: 'Ticket creado correctamente !'});
     } catch (error) {
         console.error(error.message);
         const status = error.statusCode || 500;
@@ -67,7 +69,7 @@ async function updateTicket(req, res) {
             updateData
         );
 
-        return res.status(200).json({ message: 'Ticket actualizado correctamente !', ticket: updatedTicket });
+        return res.status(200).json({ message: 'Ticket actualizado correctamente !'});
     } catch (error) {
         console.error(error.message);
         const status = error.statusCode || 500;
@@ -86,7 +88,7 @@ async function changeTicketState(req, res) {
             state
         );
 
-        return res.status(200).json({ message: 'Estado del ticket actualizado !', ticket: updatedTicket });
+        return res.status(200).json({ message: 'Estado del ticket actualizado !'});
     } catch (error) {
         console.error(error.message);
         const status = error.statusCode || 500;

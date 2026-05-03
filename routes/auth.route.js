@@ -9,7 +9,7 @@ import { postLoginCredentials, registerUser } from "../controllers/auth.controll
 
 const authRouter = Router();
 
-authRouter.post('/', jsonReqIsValid, schemaValidation(loginUserSchema), postLoginCredentials); //loginRoute
+authRouter.post('/login', jsonReqIsValid, schemaValidation(loginUserSchema), postLoginCredentials); //loginRoute
 
 authRouter.post('/register', jsonReqIsValid, schemaValidation(registerUserSchema), registerUser);
 

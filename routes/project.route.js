@@ -7,7 +7,7 @@ import schemaParamValidation from "../middlewares/validateParamsSchema.js";
 import { registerProjectSchema, projectParamsSchema } from "../validators/project.schema.js";
 import addProjectMemberParamsSchema from '../validators/projectMemberParams.schema.js';
 
-import { getProjects, createProject, addProjectMember, updateProject, getProjectById } from "../controllers/project.controller.js";
+import { getProjects, createProject, addProjectMember, updateProject, getProjectById, removeProjectMember } from "../controllers/project.controller.js";
 
 const projectRouter = Router();
 
@@ -23,7 +23,7 @@ projectRouter.put('/:projectId/', authorizationValidator, schemaParamValidation(
 
 projectRouter.post('/:projectId/member/:memberId', authorizationValidator, schemaParamValidation(addProjectMemberParamsSchema), addProjectMember);
 
-//projectRouter.delete('/:projectId/member/:memberId', authorizationValidator, schemaParamValidation(addProjectMemberParamsSchema))
-//tambien aqui podriamos quitar a un miembro, siempre y cuando el que lo haga tambien sea miembro del proyecto (dentro del assignedProjectService)
+projectRouter.delete('/:projectId/member/:memberId', authorizationValidator, schemaParamValidation(addProjectMemberParamsSchema), removeProjectMember);
+
 
 export default projectRouter;

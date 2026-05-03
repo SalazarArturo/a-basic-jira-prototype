@@ -30,11 +30,11 @@ ticketRouter.use(authorizationValidator);
 ticketRouter.use(schemaParamValidation(projectParamsSchema)); // valida que projectId sea numero valido
 ticketRouter.use(verifyProjectMembership); // valida que el usuario sea miembro del proyecto
 
-ticketRouter.get('/', getTickets); // GET /projects/:projectId/tickets
+ticketRouter.get('/', getTickets); // GET /projects/:projectId/tickets CHECK !
 
-ticketRouter.get('/:ticketId', schemaParamValidation(ticketParamsSchema), getTicketById); // GET /projects/:projectId/tickets/:ticketId
+ticketRouter.get('/:ticketId', schemaParamValidation(ticketParamsSchema), getTicketById); //CHECK
 
-ticketRouter.post('/', jsonReqIsValid, schemaValidation(createTicketSchema), createTicket); // POST /projects/:projectId/tickets
+ticketRouter.post('/', jsonReqIsValid, schemaValidation(createTicketSchema), createTicket); // POST /projects/:projectId/tickets CHECK !!
 
 ticketRouter.put('/:ticketId', jsonReqIsValid, schemaParamValidation(ticketParamsSchema), schemaValidation(updateTicketSchema), updateTicket); // PUT /projects/:projectId/tickets/:ticketId
 
@@ -44,4 +44,4 @@ ticketRouter.delete('/:ticketId', schemaParamValidation(ticketParamsSchema), del
 
 export default ticketRouter;
 
-//creo que aqui el router trata de entrar por medio de la ruta inicial del router de projects ... ver que pasa ahi 
+
