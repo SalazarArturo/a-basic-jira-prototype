@@ -1,5 +1,6 @@
-import { getUserProjects, createProjectService } from "../services/project.service.js";
+import { getUserProjects, createProjectService, getProjectByIdService, updateProjectService } from "../services/project.service.js";
 import { addColabProjectMember, getProjectMember } from "../services/assignedProject.service.js";
+import { getProjectMembersService } from "../services/user.service.js";
 
 async function getProjects(req, res){
     const {userId} = req.user;
@@ -30,6 +31,32 @@ async function createProject(req, res){
     }
 }
 
+async function getProjectById(req, res){
+
+    const {projectId} = req.params;
+    const {userId} = req.user;
+
+    try {
+        const projectDetails = await getProjectByIdService(userId, parseInt(projectId));
+
+        if(!projectDetails){
+            return res.status(400).json({error: 'no tienes permisos para acceder a este proyecto'});
+        }
+
+        const projectMembers = await getProjectMembersService(parseInt(projectId));
+        
+        return res.status(200).json({
+            projectDetails,
+            projectMembers
+        });
+
+    } catch (error) {
+        console.error(error.message);
+        return res.status(500).json({error: "error interno, intente nuevamente"});
+    }
+
+}
+
 async function addProjectMember(req, res){
     const {projectId, memberId} = req.params;
 
@@ -51,8 +78,28 @@ async function addProjectMember(req, res){
     }
 }
 
+async function updateProject(req, res){ //aqui se usara el servicio para actualizar un proyecto
+
+    const {userId} = req.user;
+    const {projectId} = req.params;
+
+    try {
+        const result = await updateProjectService(parseInt(projectId), userId, req.body);
+        if(!result){
+            return res.status(400).json({error: 'No tiene tiene permisos para editar este proyecto'});
+        }
+        return res.status(200).json({message: 'Proyecto actualizado con exito !'});
+
+    } catch (error) {
+        console.error(error.message);
+        return res.status(500).json({error: 'error interno, intente nuevamente'});
+    }
+}
+
 export{
     getProjects,
     createProject,
-    addProjectMember
+    getProjectById,
+    addProjectMember,
+    updateProject
 }

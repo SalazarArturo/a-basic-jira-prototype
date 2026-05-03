@@ -43,3 +43,5 @@ ticketRouter.patch('/:ticketId/state', jsonReqIsValid, schemaParamValidation(tic
 ticketRouter.delete('/:ticketId', schemaParamValidation(ticketParamsSchema), deleteTicket); // DELETE /projects/:projectId/tickets/:ticketId
 
 export default ticketRouter;
+
+//creo que aqui el router trata de entrar por medio de la ruta inicial del router de projects ... ver que pasa ahi 

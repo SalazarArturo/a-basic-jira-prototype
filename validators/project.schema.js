@@ -5,6 +5,11 @@ const registerProjectSchema = Joi.object({
     description: Joi.string().max(100).required()
 });
 
+const projectParamsSchema = Joi.object({
+    projectId: Joi.number().integer().positive().required()
+});
+
 export{
-    registerProjectSchema
+    registerProjectSchema,
+    projectParamsSchema
 }

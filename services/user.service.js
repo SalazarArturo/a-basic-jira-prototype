@@ -1,4 +1,4 @@
-import { User } from "../models/index.js";
+import { User, Project } from "../models/index.js";
 
 async function registerUserService(userCredentials){
     try {
@@ -20,7 +20,27 @@ async function findUserByEmailService(email){ // si entendia como funcionaba la 
     }
 }
 
+async function getProjectMembersService(projectId){ //khe pazo aaki ?
+
+    try {
+        const result = await User.findAll({
+            include: [{
+                model: Project,
+                where: {projectId},
+                through: {attributes: []}
+            }],
+            attributes: ['userId', 'name', 'email']
+        });
+
+        return result;
+
+    } catch (error) {
+        throw error
+    }
+}
+
 export {
     registerUserService,
-    findUserByEmailService
+    findUserByEmailService,
+    getProjectMembersService
 }

@@ -2,9 +2,10 @@ import 'dotenv/config';
 import express from 'express';
 
 import { sequelize, connectDb } from './config/db.config.js';
-import './models/index.js';
+import './models/index.js'; //modelos con las relaciones establecidas
 import authRouter from './routes/auth.route.js';
 import projectRouter from './routes/project.route.js';
+import ticketRouter from './routes/ticket.route.js';
 
 const app = express();
 
@@ -12,6 +13,8 @@ app.use(express.json());
 
 app.use('/', authRouter);
 app.use('/projects', projectRouter);
+app.use('/projects/:projectId/tickets', ticketRouter);
+//falta establecer aqui el router de tickets 
 
 async function start(){
     try {

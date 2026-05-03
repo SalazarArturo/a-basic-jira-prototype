@@ -38,17 +38,61 @@ async function createProjectService(projectData){
     }
 }
 
-
-
-async function updateProjectService(projectId, userId, updateData){
+async function getProjectByIdService(userId, projectId){
+    //tengo que obtener un proyecto de la tabla proyectos pero la forma de validarlo es si en primera instancia soy el dueño o si soy colaborador del proyecto que quiero traer
     try {
-        // solo el owner puede editar el proyecto
-        const project = await Project.findOne({ where: { projectId, ownerId: userId } });
+        
+        const project = await Project.findByPk(projectId);
 
-        if (!project) return null;
+        if(!project) return null;
+
+        if(project.ownerId === userId){ 
+            return project;
+        }
+
+        
+        const isCollaborator = await AssignedProject.findOne({
+            where:{
+                projectId,
+                userId
+            }
+        });
+
+        if(!isCollaborator) return null;
+
+        return project;
+
+    } catch (error) {
+        throw error
+    }
+}
+
+async function updateProjectService(projectId, userId, updateData){ //corregir los permisos para editar y usar esto en el router de proyectos
+    try {
+        // solo el owner puede editar el proyecto XXXX cualquier usuario miembro de un proyecto puede editar el proyecto(suena mal lo se pero asi esta el enunciado xd)
+
+        const project = await Project.findOne({ where: {projectId}}); //primero verificamos que el proyecto exista
+
+        if (!project) return null; //si no existe null
+
+        if(project.ownerId === userId){
+
+            await project.update(updateData);
+            return project;
+        }
+
+        const isCollaborator = await AssignedProject.findOne({
+            where:{
+                projectId,
+                userId
+            }
+        });
+
+        if(!isCollaborator) return null;
 
         await project.update(updateData);
         return project;
+
     } catch (error) {
         throw error;
     }
@@ -57,5 +101,6 @@ async function updateProjectService(projectId, userId, updateData){
 export {
     getUserProjects,
     createProjectService,
-    updateProjectService
+    updateProjectService,
+    getProjectByIdService
 }
