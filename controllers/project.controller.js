@@ -1,6 +1,6 @@
 import { getUserProjects, createProjectService, getProjectByIdService, updateProjectService } from "../services/project.service.js";
 import { addColabProjectMember, getProjectMember, removeColabProjectMemberService } from "../services/assignedProject.service.js";
-import { getProjectMembersService } from "../services/user.service.js";
+import { getProjectMembersService, getAllUsersService } from "../services/user.service.js";
 
 async function getProjects(req, res){
     const {userId} = req.user;
@@ -114,11 +114,22 @@ async function removeProjectMember(req, res){
     }
 }
 
+async function getAllUsers(req, res){
+    try {
+        const result = await getAllUsersService();
+        return res.status(200).json(result);
+    } catch (error) {
+        console.error(error.message);
+        return res.status(500).json({error: 'error interno, intente nuevamente'});
+    }
+}
+
 export{
     getProjects,
     createProject,
     getProjectById,
     addProjectMember,
     updateProject,
-    removeProjectMember
+    removeProjectMember,
+    getAllUsers
 }

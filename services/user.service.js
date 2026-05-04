@@ -39,8 +39,20 @@ async function getProjectMembersService(projectId){ //khe pazo aaki ?
     }
 }
 
+async function getAllUsersService(){
+    try {
+        const result = await User.findAll({
+            attributes: ['userId', 'name', 'email']
+        });
+        return result;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export {
     registerUserService,
     findUserByEmailService,
-    getProjectMembersService
+    getProjectMembersService,
+    getAllUsersService
 }

@@ -7,11 +7,13 @@ import schemaParamValidation from "../middlewares/validateParamsSchema.js";
 import { registerProjectSchema, projectParamsSchema } from "../validators/project.schema.js";
 import addProjectMemberParamsSchema from '../validators/projectMemberParams.schema.js';
 
-import { getProjects, createProject, addProjectMember, updateProject, getProjectById, removeProjectMember } from "../controllers/project.controller.js";
+import { getProjects, createProject, addProjectMember, updateProject, getProjectById, removeProjectMember, getAllUsers } from "../controllers/project.controller.js";
 
 const projectRouter = Router();
 
 projectRouter.get('/', authorizationValidator, getProjects); //aqui ya empiezan las rutas protegidas. Obtener proyectos  (propios y de colab)
+
+projectRouter.get('/users/available', authorizationValidator, getAllUsers); //obtener todos los usuarios disponibles para agregar como colaboradores
 
 projectRouter.post('/', authorizationValidator, schemaValidation(registerProjectSchema), createProject); 
 
