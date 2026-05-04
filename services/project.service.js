@@ -14,7 +14,8 @@ async function getUserProjects(userId){
             where:{
                 projectId: {
                     [Op.in]: assignedProjectsId
-                }
+                },
+                ownerId: {[Op.ne]: userId}
             }
         });
 

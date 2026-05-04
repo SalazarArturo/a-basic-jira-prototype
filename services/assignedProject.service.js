@@ -38,17 +38,10 @@ async function removeColabProjectMemberService(projectId, userId){
 
       if(!existingCollab) return null;
 
-      if(currentProject.ownerId === userId){
-         return await AssignedProject.destroy({where:{
-                projectId,
-                userId
-            }});
-      }
-
-       return await AssignedProject.destroy({where:{
-                projectId,
-                userId
-            }});
+      return await AssignedProject.destroy({where:{
+                        projectId,
+                        userId
+                   }});
      
     } catch (error) {
         throw error;

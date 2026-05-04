@@ -13,7 +13,7 @@ import ticketRouter from './routes/ticket.route.js';
 const app = express();
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "http://localhost:4200",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }));

@@ -97,14 +97,14 @@ async function updateProject(req, res){ //aqui se usara el servicio para actuali
 }
 
 async function removeProjectMember(req, res){
-    const {userId} = req.user;
-    const {projectId} = req.params;
+    
+    const {projectId, memberId} = req.params;
 
     try {
-        const result = await removeColabProjectMemberService(parseInt(projectId), userId);
+        const result = await removeColabProjectMemberService(parseInt(projectId), parseInt(memberId));
 
         if(!result){
-            return res.status(400).json({message: 'No tiene permisos para remover al miembro'});
+            return res.status(400).json({message: 'No tiene permisos para remover al miembro o el proyecto no existe'});
         }
         return res.status(200).json({message: 'Miembro removido con exito'});
 
